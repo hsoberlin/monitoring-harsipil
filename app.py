@@ -12,30 +12,33 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
     
-    html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
-    .main { background-color: #f8fafc; }
+    /* Paksa Tema Terang (Anti Dark-Mode Clash) */
+    html, body, [class*="css"], .stApp { font-family: 'Inter', sans-serif; background-color: #f8fafc !important; color: #0f172a !important; }
     
-    .app-header { background-color: #ffffff; padding: 15px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 15px; text-align: center; border-bottom: 3px solid #1e3a8a; }
-    .app-title { color: #0f172a; font-size: 18px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.5px; }
-    .app-subtitle { color: #64748b; font-size: 12px; font-weight: 400; }
+    .app-header { background-color: #ffffff !important; padding: 15px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 15px; text-align: center; border-bottom: 3px solid #1e3a8a; }
+    .app-title { color: #0f172a !important; font-size: 18px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.5px; }
+    .app-subtitle { color: #475569 !important; font-size: 12px; font-weight: 600; }
     
     .metric-container { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px; }
-    .metric-card { flex: 1; background: #ffffff; padding: 12px 5px; border-radius: 10px; border: 1px solid #e2e8f0; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-    .metric-card.normal { border-top: 3px solid #3b82f6; }
-    .metric-card.alert { border-top: 3px solid #ef4444; }
-    .metric-label { font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .metric-val { font-size: 18px; font-weight: 700; color: #0f172a; margin-top: 4px; }
+    .metric-card { flex: 1; background-color: #ffffff !important; padding: 12px 5px; border-radius: 10px; border: 1px solid #cbd5e1; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .metric-card.normal { border-top: 4px solid #3b82f6; }
+    .metric-card.alert { border-top: 4px solid #ef4444; }
+    .metric-label { font-size: 10px; color: #475569 !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .metric-val { font-size: 18px; font-weight: 800; color: #0f172a !important; margin-top: 4px; }
     
-    .streamlit-expanderHeader { font-size: 14px !important; font-weight: 600 !important; color: #1e3a8a !important; }
-    .stTable { font-size: 11px !important; }
-    th { background-color: #f1f5f9 !important; color: #334155 !important; font-weight: 600 !important; }
-    td { color: #1e293b !important; padding: 6px 8px !important; }
+    /* Styling Tabel & Expander agar selalu putih dan terbaca */
+    .streamlit-expanderHeader { background-color: #ffffff !important; color: #1e3a8a !important; font-size: 14px !important; font-weight: 700 !important; border-radius: 8px; border: 1px solid #e2e8f0; }
+    div[data-testid="stExpanderDetails"] { background-color: #ffffff !important; color: #0f172a !important; border: 1px solid #e2e8f0; border-top: none; padding: 10px; border-radius: 0 0 8px 8px; }
+    
+    .stTable { font-size: 12px !important; background-color: #ffffff !important; }
+    th { background-color: #e2e8f0 !important; color: #0f172a !important; font-weight: 700 !important; border-bottom: 2px solid #cbd5e1 !important; }
+    td { background-color: #ffffff !important; color: #0f172a !important; border-bottom: 1px solid #e2e8f0 !important; padding: 8px !important; }
     
     header { display: none !important; }
     #MainMenu { display: none !important; }
     footer { display: none !important; }
     
-    .sign-container { display: flex; justify-content: space-between; text-align: center; font-size: 10px; color: #475569; margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2e8f0; }
+    .sign-container { display: flex; justify-content: space-between; text-align: center; font-size: 10px; color: #475569 !important; margin-top: 20px; padding-top: 15px; border-top: 1px solid #cbd5e1; font-weight: 600; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -62,8 +65,7 @@ try:
         <div class="app-header">
             <div class="app-title">{m['Nama_Pekerjaan']}</div>
             <div class="app-subtitle">
-                {m['No_Kontrak']} | Target: {m['Target_Selesai']}<br>
-                Update: {datetime.now().strftime('%d %b %Y')}
+                {m['No_Kontrak']} <br> Target: {m['Target_Selesai']} | Update: {datetime.now().strftime('%d %b %Y')}
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -92,39 +94,40 @@ try:
         """, unsafe_allow_html=True)
 
         fig = go.Figure()
-        fig.add_trace(go.Scatter(x=df_progress['Minggu_Ke'], y=df_progress['Rencana_Persen'], name='Rencana', line=dict(color='#3b82f6', width=2), mode='lines+markers', marker=dict(size=6)))
-        fig.add_trace(go.Scatter(x=df_progress['Minggu_Ke'], y=df_progress['Aktual_Persen'], name='Aktual', line=dict(color='#ef4444', width=2), mode='lines+markers', marker=dict(size=6)))
+        fig.add_trace(go.Scatter(x=df_progress['Minggu_Ke'], y=df_progress['Rencana_Persen'], name='Rencana', line=dict(color='#3b82f6', width=3), mode='lines+markers', marker=dict(size=8)))
+        fig.add_trace(go.Scatter(x=df_progress['Minggu_Ke'], y=df_progress['Aktual_Persen'], name='Aktual', line=dict(color='#ef4444', width=3), mode='lines+markers', marker=dict(size=8)))
         
         fig.update_layout(
             height=220,
             margin=dict(l=10, r=10, t=5, b=5),
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(size=10)),
-            xaxis=dict(tickfont=dict(size=10)),
-            yaxis=dict(tickfont=dict(size=10))
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(size=11, color='#0f172a')),
+            xaxis=dict(tickfont=dict(size=10, color='#0f172a')),
+            yaxis=dict(tickfont=dict(size=10, color='#0f172a'))
         )
         st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
 
-    with st.expander("STATUS APPROVAL ADMINISTRASI (KRITIS)", expanded=True):
-        if not df_admin.empty: st.table(df_admin)
-
-    with st.expander("REALISASI PEKERJAAN (MINGGU 25)"):
+    # URUTAN TAB SUDAH DISESUAIKAN KRONOLOGIS
+    with st.expander("1. REALISASI PEKERJAAN (MINGGU 25)", expanded=True):
         if not df_realisasi.empty: st.table(df_realisasi)
 
-    with st.expander("QUALITY CONTROL DAN TEMUAN"):
+    with st.expander("2. QUALITY CONTROL DAN TEMUAN"):
         if not df_qc.empty: st.table(df_qc)
 
-    with st.expander("RENCANA KERJA (MINGGU 26)"):
+    with st.expander("3. RENCANA KERJA (MINGGU 26)"):
         if not df_rencana.empty: st.table(df_rencana)
+
+    with st.expander("4. STATUS APPROVAL ADMINISTRASI"):
+        if not df_admin.empty: st.table(df_admin)
 
     st.markdown("""
         <div class="sign-container">
-            <div style="flex: 1;">PT Solusi Paripurna Indonesia<br><br><br><br>(____________________)</div>
-            <div style="flex: 1;">PT PLN (Persero) PUSMANPRO<br><br><br><br>(____________________)</div>
-            <div style="flex: 1;">PT PLN IP UBP Saguling<br><br><br><br>(____________________)</div>
+            <div style="flex: 1;">PT Solusi Paripurna Indonesia<br><br><br><br>(__________________)</div>
+            <div style="flex: 1;">PT PLN (Persero) PUSMANPRO<br><br><br><br>(__________________)</div>
+            <div style="flex: 1;">PT PLN IP UBP Saguling<br><br><br><br>(__________________)</div>
         </div>
     """, unsafe_allow_html=True)
 
