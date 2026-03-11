@@ -76,7 +76,8 @@ st.markdown("""
 
 try:
     # 2. Koneksi Google Sheets
-    gc = gspread.service_account(filename='kunci-rahasia.json')
+    kredensial = json.loads(st.secrets["gcp_service_account"])
+gc = gspread.service_account_from_dict(kredensial)
     sh = gc.open("Master Data Project - Sipil Pemeliharaan PLN IP UBP SGL")
     
     def get_df(name):
@@ -172,3 +173,4 @@ try:
 
 except Exception as e:
     st.error(f"Gagal memuat data dari Spreadsheet. Error: {e}")
+
