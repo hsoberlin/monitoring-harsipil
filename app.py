@@ -147,9 +147,10 @@ try:
         <div class="sign-container">
             <div style="flex: 1;">Pelaksana<br><br><br>(__________________)</div>
             <div style="flex: 1;">Pengawas<br><br><br>(__________________)</div>
-            <div style="flex: 1;">PLN IP UBP<br><br><br>(__________________)</div>
+            <div style="flex: 1;">PLN IP UBP SGL<br><br><br>(__________________)</div>
         </div>
     """, unsafe_allow_html=True)
 
 except Exception as e:
     st.error(f"Sistem Gagal Memuat Data. Detail Error: {e}")
+
